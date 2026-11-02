@@ -1,4 +1,44 @@
 const apiBase = '';
+const socialProfiles = { facebook: '', linkedin: '', github: '', discord: '' };
+const socialIcons = {
+  facebook: '<path d="M13.6 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.5V13h2.7v8z"/>',
+  linkedin: '<path d="M5.2 8.5a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6ZM3.7 10h3v10h-3zm5 0h2.9v1.4h.1a3.2 3.2 0 0 1 2.9-1.6c3.1 0 3.7 2 3.7 4.6V20h-3v-5c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V20h-3z"/>',
+  github: '<path d="M12 .9a11.1 11.1 0 0 0-3.5 21.6c.6.1.8-.3.8-.6v-2.1c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.7 2.5 4.1 1.8.1-.7.4-1.2.7-1.5-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.6-2.8 5.6-5.4 5.9.4.3.8 1 .8 2v2.9c0 .3.2.7.8.6A11.1 11.1 0 0 0 12 .9Z"/>',
+  discord: '<path d="M19.7 5.2a18 18 0 0 0-4.4-1.4l-.5 1a16 16 0 0 0-5.6 0l-.5-1a18 18 0 0 0-4.4 1.4C1.5 9.3.7 13.3 1.1 17.2a18 18 0 0 0 5.4 2.7l1.2-2a11 11 0 0 1-1.9-.9l.5-.4a13 13 0 0 0 11.4 0l.5.4a11 11 0 0 1-1.9.9l1.2 2a18 18 0 0 0 5.4-2.7c.5-4.5-.8-8.4-3.2-12Zm-11 9.7c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/>',
+};
+const socialRow = document.querySelector('.social-row') || (() => {
+  const row = document.createElement('div');
+  row.className = 'social-row';
+  row.setAttribute('aria-label', 'Social profiles');
+  document.querySelector('.visit-line')?.after(row);
+  return row;
+})();
+if (socialRow) {
+  socialRow.replaceChildren();
+  Object.entries(socialIcons).forEach(([platform, icon]) => {
+    const profileUrl = socialProfiles[platform];
+    let control;
+    try {
+      const parsedUrl = new URL(profileUrl);
+      control = parsedUrl.protocol === 'https:' ? document.createElement('a') : document.createElement('button');
+    } catch {
+      control = document.createElement('button');
+    }
+    control.className = 'social-link';
+    control.setAttribute('aria-label', profileUrl && control.tagName === 'A' ? `${platform} profile (opens in a new tab)` : `${platform} profile link not configured`);
+    control.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${icon}</svg>`;
+    if (control.tagName === 'A') {
+      control.href = profileUrl;
+      control.target = '_blank';
+      control.rel = 'noopener noreferrer';
+    } else {
+      control.type = 'button';
+      control.disabled = true;
+      control.title = 'Add your profile URL in assets/js/script.js';
+    }
+    socialRow.append(control);
+  });
+}
 const counter = document.querySelector('#visit-count');
 
 if (counter && !apiBase) {
