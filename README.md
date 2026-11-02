@@ -1,6 +1,6 @@
 # John Mark Fuentes — Portfolio
 
-A personal portfolio made with plain HTML, CSS, and JavaScript. It does not need a framework or package installation to preview.
+A personal portfolio made with plain HTML, CSS, and JavaScript. Each navigation item opens its own page. It does not need a framework or package installation to preview.
 
 ## Preview in VS Code
 
@@ -9,7 +9,7 @@ A personal portfolio made with plain HTML, CSS, and JavaScript. It does not need
 3. Click **Go Live** in the lower-right status bar (with the Live Server extension installed).
 4. View the page in the browser tab that opens.
 
-The portfolio files are `index.html`, `styles.css`, `script.js`, and the `images` folder.
+The pages are `index.html` (Home), `projects.html`, `tools.html`, `resources.html`, `about.html`, and `contact.html`. Shared styling and interactions are in `styles.css` and `script.js`; the profile photo is in `images`.
 
 ## Publish with GitHub Pages
 
