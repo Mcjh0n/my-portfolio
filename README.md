@@ -9,7 +9,7 @@ A personal portfolio made with plain HTML, CSS, and JavaScript. Each navigation 
 3. Click **Go Live** in the lower-right status bar (with the Live Server extension installed).
 4. View the page in the browser tab that opens.
 
-The pages are `index.html` (Home), `projects.html`, `tools.html`, `resources.html`, `about.html`, and `contact.html`. Shared styling and interactions are in `styles.css` and `script.js`; the profile photo is in `images`.
+`index.html` (Home) stays at the project root for GitHub Pages. The other pages are grouped in `pages/`: `projects.html`, `tools.html`, `resources.html`, `about.html`, and `contact.html`. Shared files are grouped in `assets/css/`, `assets/js/`, and `assets/images/`.
 
 ## Publish with GitHub Pages
 
@@ -22,4 +22,4 @@ In the repository, open **Settings → Pages**. Under **Build and deployment**, 
 - Social profile URLs
 - Free resources
 
-The contact verification and visit counter need the separate Cloudflare Worker and Resend setup described in [worker/README.md](worker/README.md). Until the API URL is added to the `data-api-base` attribute in `index.html`, the form will explain that verification is not connected and the visitor count will show setup pending.
+The contact verification and visit counter need the separate Cloudflare Worker and Resend setup described in [worker/README.md](worker/README.md). Until an API URL is configured in `assets/js/script.js`, the form explains that verification is not connected and the visit count shows setup pending.

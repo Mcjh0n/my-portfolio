@@ -1,4 +1,4 @@
-const apiBase = document.documentElement.dataset.apiBase?.trim() || '';
+const apiBase = '';
 const counter = document.querySelector('#visit-count');
 
 if (counter && !apiBase) {
