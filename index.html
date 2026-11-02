@@ -1,15 +1,5 @@
----
-import '../styles/global.css';
-const apiBase = import.meta.env.PUBLIC_API_BASE || '';
-const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
-const nav = [
-  ['Home', '#home'], ['Projects', '#projects'], ['Tools', '#tools'],
-  ['Free Resources', '#resources'], ['About', '#about'], ['Contact', '#contact'],
-];
----
-
 <!doctype html>
-<html lang="en">
+<html lang="en" data-api-base="">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,15 +7,17 @@ const nav = [
     <meta name="description" content="John Mark Fuentes is a junior web developer building thoughtful, responsive web experiences." />
     <title>John Mark Fuentes — Junior Web Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
     <div class="site-shell">
       <aside class="sidebar" aria-label="Portfolio sidebar">
         <a class="brand-mark" href="#home" aria-label="John Mark Fuentes home">JM<span>.</span></a>
         <div class="profile-photo-wrap">
-          <img class="profile-photo" src={`${base}images/john-mark-fuentes.jpg`} alt="John Mark Fuentes outdoors" />
+          <img class="profile-photo" src="images/john-mark-fuentes.jpg" alt="John Mark Fuentes outdoors" />
           <span class="availability"><i></i> Open to opportunities</span>
         </div>
         <div class="profile-copy">
@@ -41,7 +33,12 @@ const nav = [
           <span class="social-placeholder"></span>
         </div>
         <nav class="side-nav" aria-label="Main navigation">
-          {nav.map(([label, href], i) => <a class:list={['nav-link', i === 0 && 'active']} href={href}><span class="nav-number">0{i + 1}</span>{label}<span class="nav-arrow">↗</span></a>)}
+          <a class="nav-link active" href="#home"><span class="nav-number">01</span>Home<span class="nav-arrow">↗</span></a>
+          <a class="nav-link" href="#projects"><span class="nav-number">02</span>Projects<span class="nav-arrow">↗</span></a>
+          <a class="nav-link" href="#tools"><span class="nav-number">03</span>Tools<span class="nav-arrow">↗</span></a>
+          <a class="nav-link" href="#resources"><span class="nav-number">04</span>Free Resources<span class="nav-arrow">↗</span></a>
+          <a class="nav-link" href="#about"><span class="nav-number">05</span>About<span class="nav-arrow">↗</span></a>
+          <a class="nav-link" href="#contact"><span class="nav-number">06</span>Contact<span class="nav-arrow">↗</span></a>
         </nav>
         <div class="sidebar-bottom"><span class="mini-orbit">✳</span><span>Thoughtful by design.<br />Built to keep getting better.</span></div>
       </aside>
@@ -82,7 +79,7 @@ const nav = [
           <div class="section-heading"><div><p class="eyebrow">CONTACT</p><h2>Let’s make something<br /><span class="muted-heading">worth opening.</span></h2></div><p class="section-blurb">Have an opportunity or idea? Send me a message and let’s start a conversation.</p></div>
           <div class="contact-grid">
             <div class="contact-aside"><span class="contact-glyph">↗</span><p class="eyebrow">SAY HELLO</p><h3>Good things<br />start with a note.</h3><p>I’m open to hearing about projects, opportunities, and ways to grow.</p><a class="email-link" href="mailto:johnmarkfuentes8@gmail.com">johnmarkfuentes8@gmail.com <span>↗</span></a><div class="contact-aside-foot"><span class="location-dot"></span> Usually replies within a few days</div></div>
-            <form class="contact-form" id="contact-form" data-api-base={apiBase} novalidate>
+            <form class="contact-form" id="contact-form" novalidate>
               <div class="form-heading"><div><p class="eyebrow">YOUR MESSAGE</p><h3>Tell me what’s on your mind.</h3></div><span class="form-step" id="form-step-label">STEP 01 / 02</span></div>
               <div id="message-fields">
                 <div class="form-row"><label>YOUR NAME<input name="name" autocomplete="name" required maxlength="90" placeholder="How should I address you?" /></label><label>YOUR EMAIL<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com" /></label></div>
@@ -105,70 +102,5 @@ const nav = [
     </div>
 
     <button class="floating-message" id="message-button" aria-label="Open contact form"><span class="message-icon">✉</span><span>Message me</span><span class="button-arrow">↗</span></button>
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script define:vars={{ apiBase }}>
-      const counter = document.querySelector('#visit-count');
-      if (!apiBase) counter.textContent = 'Visit count setup pending';
-      else {
-        const countVisits = async () => {
-          try {
-            const headers = { 'Content-Type': 'application/json' };
-            const seen = sessionStorage.getItem('portfolio-visit-recorded');
-            if (!seen) {
-              await fetch(`${apiBase}/visits`, { method: 'POST', headers, body: JSON.stringify({ path: location.pathname }) });
-              sessionStorage.setItem('portfolio-visit-recorded', 'yes');
-            }
-            const response = await fetch(`${apiBase}/visits`);
-            if (!response.ok) throw new Error('Counter unavailable');
-            const data = await response.json();
-            counter.textContent = `${Number(data.visits).toLocaleString()} visits`;
-          } catch { counter.textContent = 'Visit count unavailable'; }
-        };
-        countVisits();
-      }
-
-      const form = document.querySelector('#contact-form');
-      const status = document.querySelector('#form-status');
-      const messageFields = document.querySelector('#message-fields');
-      const verifyFields = document.querySelector('#verification-fields');
-      const stepLabel = document.querySelector('#form-step-label');
-      const toast = document.querySelector('#toast');
-      let pendingMessage = null;
-      const setStatus = (message, kind = '') => { status.textContent = message; status.dataset.kind = kind; };
-      const startVerification = async () => {
-        if (!form.reportValidity()) return;
-        if (!apiBase) { setStatus('Email verification is not connected yet. Please email me directly at johnmarkfuentes8@gmail.com.', 'error'); return; }
-        const values = Object.fromEntries(new FormData(form).entries());
-        pendingMessage = { name: values.name, email: values.email, subject: values.subject, message: values.message };
-        const button = form.querySelector('[type="submit"]'); button.disabled = true; setStatus('Sending a verification code…');
-        try {
-          const response = await fetch(`${apiBase}/contact/start`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(pendingMessage) });
-          const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Could not send a verification code.');
-          messageFields.hidden = true; verifyFields.hidden = false; stepLabel.textContent = 'STEP 02 / 02'; setStatus(data.message || 'Verification code sent. Check your email.', 'success');
-          verifyFields.querySelector('[name="code"]').focus();
-        } catch (error) { setStatus(error.message || 'Could not send the code. Please try again.', 'error'); }
-        finally { button.disabled = false; }
-      };
-      const sendVerifiedMessage = async () => {
-        const codeInput = verifyFields.querySelector('[name="code"]');
-        if (!/^\d{6}$/.test(codeInput.value)) { codeInput.setCustomValidity('Enter the 6-digit code from your email.'); codeInput.reportValidity(); codeInput.setCustomValidity(''); return; }
-        const button = document.querySelector('#verify-button'); button.disabled = true; setStatus('Checking your code and sending the message…');
-        try {
-          const response = await fetch(`${apiBase}/contact/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...pendingMessage, code: codeInput.value }) });
-          const data = await response.json(); if (!response.ok) throw new Error(data.error || 'The code could not be verified.');
-          form.reset(); pendingMessage = null; messageFields.hidden = false; verifyFields.hidden = true; stepLabel.textContent = 'STEP 01 / 02'; setStatus(data.message || 'Email verified—your message has been sent. Thank you!', 'success');
-        } catch (error) { setStatus(error.message || 'Could not verify the code. Please try again.', 'error'); }
-        finally { button.disabled = false; }
-      };
-      form.addEventListener('submit', event => { event.preventDefault(); startVerification(); });
-      document.querySelector('#verify-button').addEventListener('click', sendVerifiedMessage);
-      document.querySelector('#resend-button').addEventListener('click', startVerification);
-      document.querySelector('#message-button').addEventListener('click', () => { document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' }); setTimeout(() => form.querySelector('[name="name"]').focus(), 450); });
-      const links = document.querySelectorAll('.nav-link');
-      const sections = [...document.querySelectorAll('main section[id]')];
-      const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) links.forEach(link => link.classList.toggle('active', link.hash === `#${entry.target.id}`)); }), { rootMargin: '-35% 0px -55% 0px' });
-      sections.forEach(section => observer.observe(section));
-      document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', () => { const target = document.querySelector(link.getAttribute('href')); if (target) target.scrollIntoView({ behavior: 'smooth' }); }));
-    </script>
-  </body>
+</body>
 </html>
