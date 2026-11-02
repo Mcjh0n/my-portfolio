@@ -1,4 +1,91 @@
 const apiBase = '';
+const themeStorageKey = 'john-mark-portfolio-theme';
+const savedTheme = (() => {
+  try {
+    return localStorage.getItem(themeStorageKey);
+  } catch {
+    return null;
+  }
+})();
+const themePreference = window.matchMedia('(prefers-color-scheme: dark)');
+const initialTheme = savedTheme === 'light' || savedTheme === 'dark'
+  ? savedTheme
+  : (themePreference.matches ? 'dark' : 'light');
+document.documentElement.dataset.theme = initialTheme;
+
+const sidebar = document.querySelector('.sidebar');
+const sideNavigation = sidebar?.querySelector('.side-nav');
+const mobileMenu = document.createElement('div');
+mobileMenu.className = 'mobile-menu';
+const aboutLink = [...(sideNavigation?.querySelectorAll('.nav-link') || [])]
+  .find(link => link.textContent.trim().startsWith('About'));
+mobileMenu.innerHTML = `
+  <button class="mobile-menu-trigger" type="button" aria-label="Open menu" aria-controls="mobile-menu-panel" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+  </button>
+  <aside class="mobile-menu-panel" id="mobile-menu-panel" aria-label="Quick settings and links" hidden>
+    <div class="mobile-menu-theme"><span>Dark theme</span><button class="mobile-theme-switch" type="button" role="switch" aria-label="Dark theme" aria-checked="false"></button></div>
+    <button class="mobile-menu-link mobile-menu-accessibility" type="button"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="m5 9 7-1 7 1M12 8v5m0 0-3.5 6M12 13l3.5 6"/></svg></span><span>Accessibility</span><span class="menu-chevron" aria-hidden="true">›</span></button>
+    <a class="mobile-menu-link mobile-menu-about" href="${aboutLink?.getAttribute('href') || '#'}"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2z"/></svg></span><span>About</span><span class="menu-chevron" aria-hidden="true">›</span></a>
+  </aside>`;
+sidebar?.append(mobileMenu);
+
+const mobileMenuTrigger = mobileMenu.querySelector('.mobile-menu-trigger');
+const mobileMenuPanel = mobileMenu.querySelector('.mobile-menu-panel');
+const mobileThemeSwitch = mobileMenu.querySelector('.mobile-theme-switch');
+const mobileAccessibilityLink = mobileMenu.querySelector('.mobile-menu-accessibility');
+const mobileMenuAbout = mobileMenu.querySelector('.mobile-menu-about');
+const applyTheme = (theme, persist = true) => {
+  document.documentElement.dataset.theme = theme;
+  mobileThemeSwitch?.setAttribute('aria-checked', String(theme === 'dark'));
+  if (!persist) return;
+  try {
+    localStorage.setItem(themeStorageKey, theme);
+  } catch {
+    // The theme remains active for this page view if storage is unavailable.
+  }
+};
+applyTheme(initialTheme, false);
+
+const navigationIcons = {
+  Home: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  Projects: '<path d="M3 7.5A1.5 1.5 0 0 1 4.5 6H10l2 2h7.5A1.5 1.5 0 0 1 21 9.5v8a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><path d="M3 10h18"/>',
+  Tools: '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/>',
+  'Free Resources': '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8"/>',
+  About: '<circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2z"/>',
+  Contact: '<path d="M3 5h18v14H3z"/><path d="m3 7 9 7 9-7"/>',
+};
+sideNavigation?.querySelectorAll('.nav-link').forEach(link => {
+  const label = link.textContent.trim();
+  if (!navigationIcons[label] || link.querySelector('.mobile-nav-icon')) return;
+  const icon = document.createElement('span');
+  icon.className = 'mobile-nav-icon';
+  icon.setAttribute('aria-hidden', 'true');
+  icon.innerHTML = `<svg viewBox="0 0 24 24">${navigationIcons[label]}</svg>`;
+  link.prepend(icon);
+});
+
+const closeMobileMenu = () => {
+  if (!mobileMenuPanel || mobileMenuPanel.hidden) return;
+  mobileMenuPanel.hidden = true;
+  mobileMenuTrigger.setAttribute('aria-expanded', 'false');
+};
+mobileMenuTrigger?.addEventListener('click', () => {
+  const opening = mobileMenuPanel.hidden;
+  mobileMenuPanel.hidden = !opening;
+  mobileMenuTrigger.setAttribute('aria-expanded', String(opening));
+});
+mobileThemeSwitch?.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+mobileMenuAbout?.addEventListener('click', closeMobileMenu);
+document.addEventListener('click', event => {
+  if (mobileMenuPanel && !mobileMenu.contains(event.target)) closeMobileMenu();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeMobileMenu();
+});
+
 const socialProfiles = { facebook: '', linkedin: '', github: '', discord: '' };
 const socialIcons = {
   facebook: '<path d="M13.6 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.5V13h2.7v8z"/>',
@@ -201,6 +288,13 @@ document.body.append(accessibilityWidget);
 const accessibilityTrigger = accessibilityWidget.querySelector('.accessibility-trigger');
 const accessibilityPanel = accessibilityWidget.querySelector('.accessibility-panel');
 const accessibilityClose = accessibilityWidget.querySelector('.accessibility-close');
+let accessibilityReturnFocus = null;
+
+mobileAccessibilityLink?.addEventListener('click', () => {
+  accessibilityReturnFocus = mobileMenuTrigger;
+  closeMobileMenu();
+  accessibilityTrigger.click();
+});
 
 const effectiveReducedMotion = () => accessibilitySettings.reduceMotion ?? reducedMotionQuery.matches;
 
@@ -239,7 +333,8 @@ accessibilityTrigger.addEventListener('click', () => {
 const closeAccessibilityPanel = () => {
   accessibilityPanel.hidden = true;
   accessibilityTrigger.setAttribute('aria-expanded', 'false');
-  accessibilityTrigger.focus();
+  (accessibilityReturnFocus || accessibilityTrigger).focus();
+  accessibilityReturnFocus = null;
 };
 
 accessibilityClose.addEventListener('click', closeAccessibilityPanel);
