@@ -305,6 +305,8 @@ document.body.append(accessibilityWidget);
 const accessibilityTrigger = accessibilityWidget.querySelector('.accessibility-trigger');
 const accessibilityPanel = accessibilityWidget.querySelector('.accessibility-panel');
 const accessibilityClose = accessibilityWidget.querySelector('.accessibility-close');
+const sidebarFooter = sidebar?.querySelector('.sidebar-bottom');
+if (sidebarFooter && accessibilityTrigger) sidebarFooter.prepend(accessibilityTrigger);
 let accessibilityReturnFocus = null;
 
 mobileAccessibilityLink?.addEventListener('click', () => {
