@@ -17,8 +17,6 @@ const sidebar = document.querySelector('.sidebar');
 const sideNavigation = sidebar?.querySelector('.side-nav');
 const mobileMenu = document.createElement('div');
 mobileMenu.className = 'mobile-menu';
-const aboutLink = [...(sideNavigation?.querySelectorAll('.nav-link') || [])]
-  .find(link => link.textContent.trim().startsWith('About'));
 const resourcesLink = [...(sideNavigation?.querySelectorAll('.nav-link') || [])]
   .find(link => link.textContent.trim().startsWith('Free Resources'));
 mobileMenu.innerHTML = `
@@ -28,7 +26,6 @@ mobileMenu.innerHTML = `
   <aside class="mobile-menu-panel" id="mobile-menu-panel" aria-label="Quick settings and links" hidden>
     <div class="mobile-menu-theme"><span>Dark theme</span><button class="mobile-theme-switch" type="button" role="switch" aria-label="Dark theme" aria-checked="false"></button></div>
     <button class="mobile-menu-link mobile-menu-accessibility" type="button"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="m5 9 7-1 7 1M12 8v5m0 0-3.5 6M12 13l3.5 6"/></svg></span><span>Accessibility</span><span class="menu-chevron" aria-hidden="true">›</span></button>
-    <a class="mobile-menu-link mobile-menu-about" href="${aboutLink?.getAttribute('href') || '#'}"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2z"/></svg></span><span>About</span><span class="menu-chevron" aria-hidden="true">›</span></a>
     <a class="mobile-menu-link mobile-menu-resources" href="${resourcesLink?.getAttribute('href') || '#'}"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8"/></svg></span><span>Free resources</span><span class="menu-chevron" aria-hidden="true">›</span></a>
   </aside>`;
 sidebar?.append(mobileMenu);
@@ -37,7 +34,6 @@ const mobileMenuTrigger = mobileMenu.querySelector('.mobile-menu-trigger');
 const mobileMenuPanel = mobileMenu.querySelector('.mobile-menu-panel');
 const mobileThemeSwitch = mobileMenu.querySelector('.mobile-theme-switch');
 const mobileAccessibilityLink = mobileMenu.querySelector('.mobile-menu-accessibility');
-const mobileMenuAbout = mobileMenu.querySelector('.mobile-menu-about');
 const mobileMenuResources = mobileMenu.querySelector('.mobile-menu-resources');
 let sidebarThemeToggle;
 const applyTheme = (theme, persist = true) => {
@@ -91,7 +87,6 @@ mobileMenuTrigger?.addEventListener('click', () => {
 mobileThemeSwitch?.addEventListener('click', () => {
   applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 });
-mobileMenuAbout?.addEventListener('click', closeMobileMenu);
 mobileMenuResources?.addEventListener('click', closeMobileMenu);
 document.addEventListener('click', event => {
   if (mobileMenuPanel && !mobileMenu.contains(event.target)) closeMobileMenu();
