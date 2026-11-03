@@ -177,7 +177,7 @@ a { color: inherit; text-decoration: none; }
 .supabase-mark svg { fill: currentColor; stroke: none; }
 .firebase-mark { color: #f4a623; }
 .firebase-mark svg { fill: currentColor; stroke: #e87924; }
-.home-dashboard { padding: 0 clamp(20px,4vw,64px) 34px; background: var(--white); }
+.home-dashboard { padding: 18px clamp(20px,4vw,64px) 34px; background: var(--white); }
 .home-dashboard-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
 .home-card { position: relative; min-height: 174px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 18px; overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: var(--white); color: var(--copy); box-shadow: 0 7px 20px rgba(24,38,58,.055); }
 .home-card-featured { min-height: 214px; grid-column: span 2; display: grid; grid-template-columns: minmax(0,1fr) minmax(190px,.9fr); align-items: center; gap: 16px; }
@@ -273,7 +273,7 @@ a { color: inherit; text-decoration: none; }
   .home-tools-heading h1 { font-size: 1.08rem; }
   .home-tools-heading .home-contact-button { min-height: 39px; gap: 7px; padding: 0 11px; font-size: .7rem; }
   .tool-strip-item { min-width: 112px; flex-basis: 112px; justify-content: flex-start; padding: 10px 11px; }
-  .home-dashboard { padding: 0 18px 20px; }
+  .home-dashboard { padding: 16px 18px 20px; }
   .home-dashboard-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
   .home-card { min-height: 153px; gap: 7px; padding: 13px; }
   .home-card-featured { min-height: 0; grid-template-columns: 1fr; gap: 12px; }
