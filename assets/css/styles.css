@@ -184,7 +184,7 @@ a { color: inherit; text-decoration: none; }
 .home-card-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
 .home-card-label { color: #52708d; font-size: .59rem; font-weight: 750; letter-spacing: .11em; line-height: 1.4; }
 .home-card h2 { margin: 0; color: var(--copy); font: 750 1.02rem/1.3 var(--font-head); letter-spacing: -.025em; }
-.home-card p { margin: 0; color: var(--muted); font-size: .76rem; line-height: 1.55; }
+.home-card p { margin: 0; color: var(--muted); font-size: .76rem; line-height: 1.72; }
 .home-card-status { display: inline-flex; margin-top: 2px; padding: 5px 8px; border: 1px solid #d3e2ee; border-radius: 999px; background: #f1f7fb; color: #326b96; font-size: .6rem; font-weight: 700; }
 .home-project-art { min-height: 164px; display: grid; place-items: center; padding: 12px; border: 1px solid #dfe7ed; border-radius: 10px; background: linear-gradient(145deg,#f5f8fa,#e5eef4); }
 .sample-browser { width: min(100%,250px); height: 128px; overflow: hidden; border: 1px solid #cbd8e2; border-radius: 8px; background: #fff; box-shadow: 0 9px 20px rgba(32,62,87,.1); transform: rotate(-2deg); }
