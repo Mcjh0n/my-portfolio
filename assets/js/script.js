@@ -95,7 +95,12 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeMobileMenu();
 });
 
-const socialProfiles = { facebook: '', linkedin: '', github: '', discord: '' };
+const socialProfiles = {
+  facebook: 'https://www.facebook.com/Mcjh0n1',
+  linkedin: 'https://www.linkedin.com/in/john-mark-fuentes-7160b6311/',
+  github: 'https://github.com/Mcjh0n',
+  discord: 'https://discord.com/channels/@me',
+};
 const socialIcons = {
   facebook: '<path d="M13.6 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.5V13h2.7v8z"/>',
   linkedin: '<path d="M5.2 8.5a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6ZM3.7 10h3v10h-3zm5 0h2.9v1.4h.1a3.2 3.2 0 0 1 2.9-1.6c3.1 0 3.7 2 3.7 4.6V20h-3v-5c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V20h-3z"/>',

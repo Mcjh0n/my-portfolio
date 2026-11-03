@@ -437,6 +437,7 @@ html[data-theme="dark"] .eyebrow,html[data-theme="dark"] .username,html[data-the
 html[data-theme="dark"] .profile-name,html[data-theme="dark"] .home-tools-heading h1,html[data-theme="dark"] .section-heading h2,html[data-theme="dark"] .empty-projects h3,html[data-theme="dark"] .resource-empty h3,html[data-theme="dark"] .about-lead,html[data-theme="dark"] .contact-form,html[data-theme="dark"] .mobile-dashboard-heading h2 { color: var(--copy); }
 html[data-theme="dark"] .nav-link:hover,html[data-theme="dark"] .nav-link.active { background: #1c2a3c; color: #fff; }
 html[data-theme="dark"] .social-link { border-color: #3b4a60; background: #182435; color: #e7eff8; }
+html[data-theme="dark"] .social-link:not(:disabled):hover { border-color: #7390ae; background: #24364d; color: #fff; }
 html[data-theme="dark"] .accessibility-trigger { border-color: rgba(16,44,75,.35); background: #e7eef6; color: #15518a; box-shadow: 0 5px 16px rgba(0,0,0,.35); }
 html[data-theme="dark"] .accessibility-trigger:hover { background: #d8e5f3; }
 html[data-theme="dark"] .button-primary { background: #285a87; color: #fff; }
