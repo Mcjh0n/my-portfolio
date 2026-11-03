@@ -19,6 +19,8 @@ const mobileMenu = document.createElement('div');
 mobileMenu.className = 'mobile-menu';
 const resourcesLink = [...(sideNavigation?.querySelectorAll('.nav-link') || [])]
   .find(link => link.textContent.trim().startsWith('Free Resources'));
+const toolsLink = [...(sideNavigation?.querySelectorAll('.nav-link') || [])]
+  .find(link => link.textContent.trim().startsWith('Tools'));
 mobileMenu.innerHTML = `
   <button class="mobile-menu-trigger" type="button" aria-label="Open menu" aria-controls="mobile-menu-panel" aria-expanded="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -26,6 +28,7 @@ mobileMenu.innerHTML = `
   <aside class="mobile-menu-panel" id="mobile-menu-panel" aria-label="Quick settings and links" hidden>
     <div class="mobile-menu-theme"><span>Dark theme</span><button class="mobile-theme-switch" type="button" role="switch" aria-label="Dark theme" aria-checked="false"></button></div>
     <button class="mobile-menu-link mobile-menu-accessibility" type="button"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="2"/><path d="m5 9 7-1 7 1M12 8v5m0 0-3.5 6M12 13l3.5 6"/></svg></span><span>Accessibility</span><span class="menu-chevron" aria-hidden="true">›</span></button>
+    <a class="mobile-menu-link mobile-menu-tools" href="${toolsLink?.getAttribute('href') || '#'}"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg></span><span>Tools</span><span class="menu-chevron" aria-hidden="true">›</span></a>
     <a class="mobile-menu-link mobile-menu-resources" href="${resourcesLink?.getAttribute('href') || '#'}"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8"/></svg></span><span>Free resources</span><span class="menu-chevron" aria-hidden="true">›</span></a>
   </aside>`;
 sidebar?.append(mobileMenu);
@@ -34,6 +37,7 @@ const mobileMenuTrigger = mobileMenu.querySelector('.mobile-menu-trigger');
 const mobileMenuPanel = mobileMenu.querySelector('.mobile-menu-panel');
 const mobileThemeSwitch = mobileMenu.querySelector('.mobile-theme-switch');
 const mobileAccessibilityLink = mobileMenu.querySelector('.mobile-menu-accessibility');
+const mobileMenuTools = mobileMenu.querySelector('.mobile-menu-tools');
 const mobileMenuResources = mobileMenu.querySelector('.mobile-menu-resources');
 let sidebarThemeToggle;
 const applyTheme = (theme, persist = true) => {
@@ -88,6 +92,7 @@ mobileThemeSwitch?.addEventListener('click', () => {
   applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 });
 mobileMenuResources?.addEventListener('click', closeMobileMenu);
+mobileMenuTools?.addEventListener('click', closeMobileMenu);
 document.addEventListener('click', event => {
   if (mobileMenuPanel && !mobileMenu.contains(event.target)) closeMobileMenu();
 });
