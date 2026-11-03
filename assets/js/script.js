@@ -35,9 +35,18 @@ const mobileMenuPanel = mobileMenu.querySelector('.mobile-menu-panel');
 const mobileThemeSwitch = mobileMenu.querySelector('.mobile-theme-switch');
 const mobileAccessibilityLink = mobileMenu.querySelector('.mobile-menu-accessibility');
 const mobileMenuAbout = mobileMenu.querySelector('.mobile-menu-about');
+let sidebarThemeToggle;
 const applyTheme = (theme, persist = true) => {
   document.documentElement.dataset.theme = theme;
   mobileThemeSwitch?.setAttribute('aria-checked', String(theme === 'dark'));
+  if (sidebarThemeToggle) {
+    const dark = theme === 'dark';
+    sidebarThemeToggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    sidebarThemeToggle.title = dark ? 'Switch to light theme' : 'Switch to dark theme';
+    sidebarThemeToggle.innerHTML = dark
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>'
+      : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5 8.8 8.8 0 1 0 20.5 15.2Z"/></svg>';
+  }
   if (!persist) return;
   try {
     localStorage.setItem(themeStorageKey, theme);
@@ -57,9 +66,9 @@ const navigationIcons = {
 };
 sideNavigation?.querySelectorAll('.nav-link').forEach(link => {
   const label = link.textContent.trim();
-  if (!navigationIcons[label] || link.querySelector('.mobile-nav-icon')) return;
+  if (!navigationIcons[label] || link.querySelector('.nav-link-icon')) return;
   const icon = document.createElement('span');
-  icon.className = 'mobile-nav-icon';
+  icon.className = 'nav-link-icon';
   icon.setAttribute('aria-hidden', 'true');
   icon.innerHTML = `<svg viewBox="0 0 24 24">${navigationIcons[label]}</svg>`;
   link.prepend(icon);
@@ -125,6 +134,14 @@ if (socialRow) {
     }
     socialRow.append(control);
   });
+  sidebarThemeToggle = document.createElement('button');
+  sidebarThemeToggle.className = 'social-link theme-toggle';
+  sidebarThemeToggle.type = 'button';
+  applyTheme(document.documentElement.dataset.theme, false);
+  sidebarThemeToggle.addEventListener('click', () => {
+    applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+  socialRow.append(sidebarThemeToggle);
 }
 const counter = document.querySelector('#visit-count');
 
