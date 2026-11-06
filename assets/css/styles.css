@@ -398,7 +398,7 @@ html[data-high-contrast="true"] .button-primary { background: #081522; color: #f
 html[data-high-contrast="true"] :focus-visible { outline-color: #0069b4; }
 
 @media (max-width: 760px) {
-  .accessibility-trigger { left: 14px; bottom: calc(82px + env(safe-area-inset-bottom)); width: 48px; height: 48px; }
+  .accessibility-trigger { display: none; }
   .accessibility-panel { bottom: calc(140px + env(safe-area-inset-bottom)); }
   .mobile-menu { display: block; }
   .mobile-dashboard { display: block; }

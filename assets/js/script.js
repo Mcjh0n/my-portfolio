@@ -21,6 +21,8 @@ const resourcesLink = [...(sideNavigation?.querySelectorAll('.nav-link') || [])]
   .find(link => link.textContent.trim().startsWith('Free Resources'));
 const toolsLink = [...(sideNavigation?.querySelectorAll('.nav-link') || [])]
   .find(link => link.textContent.trim().startsWith('Tools'));
+const contactLink = [...(sideNavigation?.querySelectorAll('.nav-link') || [])]
+  .find(link => link.textContent.trim().startsWith('Contact'));
 mobileMenu.innerHTML = `
   <button class="mobile-menu-trigger" type="button" aria-label="Open menu" aria-controls="mobile-menu-panel" aria-expanded="false">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
@@ -31,6 +33,11 @@ mobileMenu.innerHTML = `
     <a class="mobile-menu-link mobile-menu-tools" href="${toolsLink?.getAttribute('href') || '#'}"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></svg></span><span>Tools</span><span class="menu-chevron" aria-hidden="true">›</span></a>
     <a class="mobile-menu-link mobile-menu-resources" href="${resourcesLink?.getAttribute('href') || '#'}"><span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20M8 7h8"/></svg></span><span>Free resources</span><span class="menu-chevron" aria-hidden="true">›</span></a>
   </aside>`;
+const mobileContactLink = document.createElement('a');
+mobileContactLink.className = 'mobile-menu-link mobile-menu-contact';
+mobileContactLink.href = contactLink?.getAttribute('href') || '#contact';
+mobileContactLink.innerHTML = '<span class="menu-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="m3 7 9 7 9-7"/></svg></span><span>Contact</span><span class="menu-chevron" aria-hidden="true">›</span>';
+mobileMenu.querySelector('.mobile-menu-panel')?.append(mobileContactLink);
 sidebar?.append(mobileMenu);
 
 const mobileMenuTrigger = mobileMenu.querySelector('.mobile-menu-trigger');
@@ -39,6 +46,7 @@ const mobileThemeSwitch = mobileMenu.querySelector('.mobile-theme-switch');
 const mobileAccessibilityLink = mobileMenu.querySelector('.mobile-menu-accessibility');
 const mobileMenuTools = mobileMenu.querySelector('.mobile-menu-tools');
 const mobileMenuResources = mobileMenu.querySelector('.mobile-menu-resources');
+const mobileMenuContact = mobileMenu.querySelector('.mobile-menu-contact');
 let sidebarThemeToggle;
 const applyTheme = (theme, persist = true) => {
   document.documentElement.dataset.theme = theme;
@@ -94,6 +102,7 @@ mobileThemeSwitch?.addEventListener('click', () => {
 });
 mobileMenuResources?.addEventListener('click', closeMobileMenu);
 mobileMenuTools?.addEventListener('click', closeMobileMenu);
+mobileMenuContact?.addEventListener('click', closeMobileMenu);
 document.addEventListener('click', event => {
   if (mobileMenuPanel && !mobileMenu.contains(event.target)) closeMobileMenu();
 });
