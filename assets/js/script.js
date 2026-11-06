@@ -166,7 +166,7 @@ if (socialRow) {
 const counter = document.querySelector('#visit-count');
 
 if (counter && !apiBase) {
-  counter.textContent = 'Visit count setup pending';
+  counter.textContent = 'Page under development';
 } else if (counter) {
   const countVisits = async () => {
     try {
